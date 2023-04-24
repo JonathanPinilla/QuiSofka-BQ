@@ -27,6 +27,77 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     }
 
     @Override
+    public Flux<Question> getFirstLvlQuestions() {
+        return this.questionRepository
+                .findAll()
+                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
+                .filter(questionData -> questionData.getLevel().equals("Initial"))
+                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .take(1)
+                .concatWith(
+                        this.questionRepository
+                                .findAll()
+                                .filter(questionData -> questionData.getLevel().equals("Initial"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
+                                .take(2)
+                )
+                .map(question -> mapper.map(question, Question.class))
+                .onErrorResume(Mono::error);
+    }
+
+    @Override
+    public Flux<Question> getSecondLvlQuestions() {
+        return this.questionRepository
+                .findAll()
+                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
+                .filter(questionData -> questionData.getLevel().equals("Basic"))
+                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .take(1)
+                .concatWith(
+                        this.questionRepository
+                                .findAll()
+                                .filter(questionData -> questionData.getLevel().equals("Basic"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
+                                .take(2)
+                )
+                .map(question -> mapper.map(question, Question.class))
+                .onErrorResume(Mono::error);
+    }
+
+    @Override
+    public Flux<Question> getThirdLvlQuestions() {
+        return this.questionRepository
+                .findAll()
+                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
+                .filter(questionData -> questionData.getLevel().equals("Basic"))
+                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .take(1)
+                .concatWith(
+                        this.questionRepository
+                                .findAll()
+                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
+                                .take(2)
+                )
+                .concatWith(
+                        this.questionRepository
+                                .findAll()
+                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equals("DDD"))
+                                .take(2)
+                )
+                .concatWith(
+                        this.questionRepository
+                                .findAll()
+                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equals("Arquitectura Empresarial"))
+                                .take(2)
+                )
+                .map(question -> mapper.map(question, Question.class))
+                .onErrorResume(Mono::error);
+    }
+
+    @Override
     public Mono<Question> getQuestionById(String id) {
         return this.questionRepository
                 .findById(id)
@@ -34,10 +105,6 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                 .map(item -> mapper.map(item, Question.class));
     }
 
-    @Override
-    public Mono<Question> getQuestionByDescriptor(String id) {
-        return null;
-    }
 
     @Override
     public Mono<Question> createQuestion(Question question) {
@@ -49,10 +116,6 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                 .onErrorResume(Mono::error);
     }
 
-    @Override
-    public Mono<Void> deleteQuestionById(String id) {
-        return null;
-    }
 
     @Override
     public Mono<Void> deleteAll(){
