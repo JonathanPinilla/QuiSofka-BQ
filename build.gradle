@@ -21,6 +21,10 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// https://mvnrepository.com/artifact/org.reactivecommons.utils/object-mapper
+	implementation group: 'org.reactivecommons.utils', name: 'object-mapper', version: '0.1.0'
+	//Added from bancolombia plugin
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.0.4'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
