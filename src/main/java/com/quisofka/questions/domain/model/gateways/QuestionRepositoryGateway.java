@@ -8,13 +8,14 @@ public interface QuestionRepositoryGateway {
 
     Flux<Question> getAllQuestions();
 
+    Flux<Question> getFirstLvlQuestions();
+
+    Flux<Question> getSecondLvlQuestions();
+
+    Flux<Question> getThirdLvlQuestions();
+
     Mono<Question> getQuestionById(String id);
-    Mono<Question> getQuestionByDescriptor(String id);
     Mono<Question> createQuestion(Question question);
-    //Mono<Question> updateQuestion(String id, Question question);
-    Mono<Void> deleteQuestionById(String id);
     Mono<Void> deleteAll();
-
-
 
 }

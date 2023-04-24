@@ -16,7 +16,8 @@ public class Question {
     private Map<String, Boolean> answers;
     private String knowledgeArea;
     private String descriptor;
-    //TODO: do respective enums
+    //TODO: enums
     private String type;
+    private String level;
 
 }

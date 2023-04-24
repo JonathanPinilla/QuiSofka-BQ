@@ -28,4 +28,5 @@ public class QuestionData {
     private String descriptor;
     //TODO: do respective enums
     private String type;
+    private String level;
 }
