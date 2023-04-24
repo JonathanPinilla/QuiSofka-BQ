@@ -43,10 +43,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     public Mono<Question> createQuestion(Question question) {
         return Mono.just(question)
                 .flatMap(question1 -> {
-                    //question1.setCreatedAt(LocalDateTime.now());
-                    //question1.setUpdatedAt(LocalDateTime.now());
                     //TODO: modify to calculate total... maybe another endpoint
-                    //order1.calculateTotal();
                     return this.questionRepository.save(mapper.map(question1, QuestionData.class));
                 }).map(question2 -> mapper.map(question2, Question.class))
                 .onErrorResume(Mono::error);
