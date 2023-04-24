@@ -2,16 +2,20 @@ package com.quisofka.questions.infrastructure.entryPoints;
 
 import com.quisofka.questions.domain.model.Question;
 import com.quisofka.questions.domain.usecase.createquestion.CreateQuestionUseCase;
+import com.quisofka.questions.domain.usecase.deleteallquestions.DeleteAllQuestionsUseCase;
+import com.quisofka.questions.domain.usecase.getallquestions.GetAllQuestionsUseCase;
+import com.quisofka.questions.domain.usecase.getquestionbyid.GetQuestionByIdUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
-import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
+import static org.springframework.web.reactive.function.server.RequestPredicates.*;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
@@ -19,6 +23,28 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 public class RouterRest {
 
     private static final String PATH = "/quisoka/questionss";
+
+
+    @Bean
+    public RouterFunction<ServerResponse> getAllQuestions(GetAllQuestionsUseCase getAllQuestionsUseCase){
+        return route(GET("/quisofka/questions"),
+                request -> ServerResponse.status(200)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromPublisher(getAllQuestionsUseCase.get(), Question.class))
+                        .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NO_CONTENT).bodyValue(throwable.getMessage())));
+    }
+
+
+    @Bean
+    public RouterFunction<ServerResponse> getQuestionById(GetQuestionByIdUseCase getQuestionByIdUseCase){
+        return route(GET("/quisofka/questions/{id}"),
+                request -> getQuestionByIdUseCase.apply(request.pathVariable("id"))
+                        .switchIfEmpty(Mono.error(new Throwable(HttpStatus.NO_CONTENT.toString())))
+                        .flatMap(item -> ServerResponse.status(200)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(item))
+                        .onErrorResume(throwable -> ServerResponse.notFound().build()));
+    }
 
     @Bean
     public RouterFunction<ServerResponse> createQuestion(CreateQuestionUseCase createQuestionUseCase) {
@@ -29,6 +55,18 @@ public class RouterRest {
                                         .contentType(MediaType.APPLICATION_JSON)
                                         .bodyValue(result))
                                 .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NOT_ACCEPTABLE).bodyValue(throwable.getMessage()))));
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> deleteAllQuestions(DeleteAllQuestionsUseCase deleteAllQuestionsUseCase){
+        return route(DELETE("/quisofka/questions"),
+                request -> deleteAllQuestionsUseCase.get()
+                        .thenReturn(
+                                ServerResponse.status(201)
+                                        .contentType(MediaType.APPLICATION_JSON)
+                                        .bodyValue("All questions have been deleted"))
+                        .flatMap(serverResponseMono -> serverResponseMono)
+                        .onErrorResume(throwable -> ServerResponse.status(HttpStatus.NO_CONTENT).bodyValue(throwable.getMessage())));
     }
 
 }

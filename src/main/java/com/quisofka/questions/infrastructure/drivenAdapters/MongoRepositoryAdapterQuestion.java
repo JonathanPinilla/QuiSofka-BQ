@@ -18,13 +18,20 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     private final ObjectMapper mapper;
 
     @Override
-    public Flux<Question> getAllQuestions() {
-        return null;
+    public Flux<Question> getAllQuestions(){
+        return this.questionRepository
+                .findAll()
+                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
+                .map(item -> mapper.map(item, Question.class))
+                .onErrorResume(Mono::error);
     }
 
     @Override
     public Mono<Question> getQuestionById(String id) {
-        return null;
+        return this.questionRepository
+                .findById(id)
+                .switchIfEmpty(Mono.error(new Throwable("Question not found")))
+                .map(item -> mapper.map(item, Question.class));
     }
 
     @Override
@@ -51,8 +58,9 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     }
 
     @Override
-    public Mono<Void> deleteAll() {
-        return null;
+    public Mono<Void> deleteAll(){
+        return this.questionRepository.deleteAll()
+                .onErrorResume(Mono::error);
     }
 
 }
