@@ -31,14 +31,14 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equals("Initial"))
-                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
+                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
                 .take(1)
                 .concatWith(
                         this.questionRepository
                                 .findAll()
-                                .filter(questionData -> questionData.getLevel().equals("Initial"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
+                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Initial"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
                                 .take(2)
                 )
                 .map(question -> mapper.map(question, Question.class))
@@ -50,8 +50,8 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equals("Basic"))
-                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
+                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
                 .take(1)
                 .concatWith(
                         this.questionRepository
@@ -69,28 +69,28 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .filter(questionData -> questionData.getLevel().equals("Basic"))
-                .filter(questionData -> questionData.getKnowledgeArea().equals("Java"))
+                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Basic"))
+                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Java"))
                 .take(1)
                 .concatWith(
                         this.questionRepository
                                 .findAll()
-                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
+                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
                                 .take(2)
                 )
                 .concatWith(
                         this.questionRepository
                                 .findAll()
-                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equals("DDD"))
+                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Descriptors"))
                                 .take(2)
                 )
                 .concatWith(
                         this.questionRepository
                                 .findAll()
-                                .filter(questionData -> questionData.getLevel().equals("Intermediate"))
-                                .filter(questionData -> questionData.getKnowledgeArea().equals("Arquitectura Empresarial"))
+                                .filter(questionData -> questionData.getLevel().equalsIgnoreCase("Intermediate"))
+                                .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Arquitectura Empresarial"))
                                 .take(2)
                 )
                 .map(question -> mapper.map(question, Question.class))

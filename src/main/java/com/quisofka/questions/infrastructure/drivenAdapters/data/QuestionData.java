@@ -1,5 +1,8 @@
 package com.quisofka.questions.infrastructure.drivenAdapters.data;
 
+import com.quisofka.questions.infrastructure.drivenAdapters.util.validators.KnowledgeAreaEnum;
+import com.quisofka.questions.infrastructure.drivenAdapters.util.validators.LevelEnum;
+import com.quisofka.questions.infrastructure.drivenAdapters.util.validators.TypeEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,9 +27,19 @@ public class QuestionData {
     @NotNull(message ="description is required")
     private String description;
     private Map<String, Boolean> answers;
+    @NotBlank(message="knowledgeArea is required")
+    @NotNull(message ="knowledgeArea is required")
+    @KnowledgeAreaEnum
     private String knowledgeArea;
+    @NotBlank(message="descriptor is required")
+    @NotNull(message ="descriptor is required")
     private String descriptor;
-    //TODO: do respective enums
+    @NotBlank(message="type is required")
+    @NotNull(message ="type is required")
+    @TypeEnum(message="type should be 'Multiple choice', 'single choice' or 'true or false'")
     private String type;
+    @NotBlank(message="level is required")
+    @NotNull(message ="level is required")
+    @LevelEnum(message="level should be 'Initial', 'Basic' or 'Intermediate'")
     private String level;
 }
