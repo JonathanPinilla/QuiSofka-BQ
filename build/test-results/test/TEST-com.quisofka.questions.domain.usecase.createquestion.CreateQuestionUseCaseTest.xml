@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.quisofka.questions.domain.usecase.createquestion.CreateQuestionUseCaseTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-04-25T16:44:05" hostname="DESKTOP-E056LNR" time="0.855">
+  <properties/>
+  <testcase name="SaveQuestionUseCase_Success" classname="com.quisofka.questions.domain.usecase.createquestion.CreateQuestionUseCaseTest" time="0.855"/>
+  <system-out><![CDATA[11:44:06.112 [Test worker] DEBUG reactor.util.Loggers -- Using Slf4j logging framework
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
