@@ -8,6 +8,9 @@ RUN mkdir -p build
 # Copy the built JAR files to the working directory
 COPY build/libs/*.jar build/libs/
 
+# Build the application using Gradle
+RUN ./gradlew build
+
 # Expose the port that the application listens on
 EXPOSE 8080
 
