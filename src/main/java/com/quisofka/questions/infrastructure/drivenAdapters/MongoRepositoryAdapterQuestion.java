@@ -107,8 +107,16 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     public Mono<Question> createQuestion(Question question) {
         return Mono.just(question)
                 .flatMap(question1 -> {
-                    return this.questionRepository.save(mapper.map(question1, QuestionData.class));
-                }).map(question2 -> mapper.map(question2, Question.class))
+                    Question question2= Question.builder()
+                            .description(question1.getDescription())
+                            .answers(question1.getAnswers())
+                            .descriptor(question1.getDescriptor())
+                            .knowledgeArea(question1.getKnowledgeArea())
+                            .type(question1.getType())
+                            .level(question1.getLevel())
+                            .build();
+                    return this.questionRepository.save(mapper.map(question2, QuestionData.class));
+                }).map(question3 -> mapper.map(question3, Question.class))
                 .onErrorResume(Mono::error);
     }
 
