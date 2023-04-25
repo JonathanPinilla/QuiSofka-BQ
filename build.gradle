@@ -25,6 +25,7 @@ dependencies {
 	implementation group: 'org.reactivecommons.utils', name: 'object-mapper', version: '0.1.0'
 	//Added from bancolombia plugin
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '3.0.4'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webflux-ui', version: '2.0.4'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

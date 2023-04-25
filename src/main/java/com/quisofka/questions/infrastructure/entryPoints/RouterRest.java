@@ -26,9 +26,6 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 @RequiredArgsConstructor
 public class RouterRest {
 
-    private static final String PATH = "/quisoka/questionss";
-
-
 
     @Bean
     public RouterFunction<ServerResponse> getAll(GetAllQuestionsUseCase getAllQuestionsUseCase){
