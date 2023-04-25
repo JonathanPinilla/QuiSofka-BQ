@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Map;
@@ -25,6 +26,7 @@ public class QuestionData {
     private String id = UUID.randomUUID().toString().substring(0,10);
     @NotBlank(message="description is required")
     @NotNull(message ="description is required")
+    @Indexed(unique=true)
     private String description;
     private Map<String, Boolean> answers;
     @NotBlank(message="knowledgeArea is required")
@@ -36,7 +38,7 @@ public class QuestionData {
     private String descriptor;
     @NotBlank(message="type is required")
     @NotNull(message ="type is required")
-    @TypeEnum(message="type should be 'Multiple choice', 'single choice' or 'true or false'")
+    @TypeEnum(message="type should be 'Multiple', 'Single' or 'truefalse'")
     private String type;
     @NotBlank(message="level is required")
     @NotNull(message ="level is required")

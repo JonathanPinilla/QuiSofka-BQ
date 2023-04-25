@@ -22,8 +22,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository
                 .findAll()
                 .switchIfEmpty(Mono.error(new Throwable("No questions available")))
-                .map(item -> mapper.map(item, Question.class))
-                .onErrorResume(Mono::error);
+                .map(item -> mapper.map(item, Question.class));
     }
 
     @Override
@@ -41,8 +40,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Javascript"))
                                 .take(2)
                 )
-                .map(question -> mapper.map(question, Question.class))
-                .onErrorResume(Mono::error);
+                .map(question -> mapper.map(question, Question.class));
     }
 
     @Override
@@ -60,8 +58,7 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                                 .filter(questionData -> questionData.getKnowledgeArea().equals("Javascript"))
                                 .take(2)
                 )
-                .map(question -> mapper.map(question, Question.class))
-                .onErrorResume(Mono::error);
+                .map(question -> mapper.map(question, Question.class));
     }
 
     @Override
@@ -93,8 +90,8 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
                                 .filter(questionData -> questionData.getKnowledgeArea().equalsIgnoreCase("Arquitectura Empresarial"))
                                 .take(2)
                 )
-                .map(question -> mapper.map(question, Question.class))
-                .onErrorResume(Mono::error);
+                .switchIfEmpty(Mono.error(new Throwable("No questions available")))
+                .map(question -> mapper.map(question, Question.class));
     }
 
     @Override
@@ -110,7 +107,6 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
     public Mono<Question> createQuestion(Question question) {
         return Mono.just(question)
                 .flatMap(question1 -> {
-                    //TODO: modify to calculate total... maybe another endpoint
                     return this.questionRepository.save(mapper.map(question1, QuestionData.class));
                 }).map(question2 -> mapper.map(question2, Question.class))
                 .onErrorResume(Mono::error);
@@ -122,5 +118,4 @@ public class MongoRepositoryAdapterQuestion implements QuestionRepositoryGateway
         return this.questionRepository.deleteAll()
                 .onErrorResume(Mono::error);
     }
-
 }

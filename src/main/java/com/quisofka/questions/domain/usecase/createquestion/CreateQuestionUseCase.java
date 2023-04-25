@@ -10,7 +10,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class CreateQuestionUseCase implements Function<Question, Mono<Question>> {
 
-    private  final QuestionRepositoryGateway repositoryGateway;
+    private final QuestionRepositoryGateway repositoryGateway;
 
     @Override
     public Mono<Question> apply(Question question) {
